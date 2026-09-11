@@ -476,23 +476,44 @@
   }
 
   /* ---------- PROJECTS (3D tilt cards) ---------- */
-  .proj-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(min(290px, 100%),1fr)); gap:22px;}
+  .proj-grid{
+    display:grid; 
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); 
+    gap:22px;
+  }
+  @media (min-width: 768px){
+    .proj-grid{ grid-template-columns:repeat(2, 1fr); gap:26px; }
+  }
+  @media (min-width: 1280px){
+    .proj-grid{ grid-template-columns:repeat(2, 1fr); gap:32px; }
+  }
+
   .tilt-wrap{perspective:900px; position:relative;}
   .proj-card{
-    background:rgba(255,255,255,0.035);
+    background:var(--bg-panel);
     backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-    border:1px solid rgba(255,255,255,0.09); border-radius:14px;
-    padding:26px; display:flex; flex-direction:column; gap:15px; height:100%;
+    border:1px solid var(--line-bright); border-radius:14px;
+    padding:28px; display:flex; flex-direction:column; gap:16px; height:100%;
     position:relative; overflow:hidden; z-index:1;
     transform-style:preserve-3d;
     box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 24px -16px rgba(0,0,0,0.5);
-    transition:transform .28s cubic-bezier(.2,.8,.2,1), border-color .25s ease, box-shadow .3s ease, z-index 0s;
+    transition:transform .3s cubic-bezier(.16,1,.3,1), border-color .3s ease, box-shadow .3s ease, z-index 0s;
     will-change:transform;
   }
   .proj-card.is-hovered{
-    border-color:rgba(118,185,0,0.5);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.1), 0 32px 64px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(118,185,0,0.15), 0 0 40px rgba(118,185,0,0.12);
+    border-color:var(--green-bright);
+    animation: projBorderShift 2.5s ease infinite alternate, projInnerShadowPulse 2s ease-in-out infinite alternate;
+    box-shadow: inset 0 0 28px rgba(118,185,0,0.18), inset 0 1px 0 rgba(255,255,255,0.2), 0 32px 64px -20px rgba(0,0,0,0.7), 0 0 45px rgba(118,185,0,0.15);
     z-index:5;
+  }
+  @keyframes projBorderShift {
+    0% { border-color: var(--green-bright); }
+    50% { border-color: var(--cyan); }
+    100% { border-color: var(--green-bright); }
+  }
+  @keyframes projInnerShadowPulse {
+    0% { box-shadow: inset 0 0 18px rgba(118,185,0,0.12), inset 0 1px 0 rgba(255,255,255,0.15), 0 32px 64px -20px rgba(0,0,0,0.7), 0 0 40px rgba(118,185,0,0.1); }
+    100% { box-shadow: inset 0 0 32px rgba(57,225,216,0.2), inset 0 1px 0 rgba(255,255,255,0.25), 0 32px 64px -20px rgba(0,0,0,0.75), 0 0 50px rgba(57,225,216,0.18); }
   }
   .proj-card .glow{
     position:absolute; inset:0; opacity:0; pointer-events:none;
@@ -1029,11 +1050,14 @@
   <section id="contact-form" class="reveal">
     <div class="sec-head">
       <h2 class="sec-title"><i class="fa-solid fa-envelope"></i> Get in touch</h2>
-      <p class="sec-sub">Send a direct message that goes straight to Aayush's inbox via Formspree.</p>
+      <p class="sec-sub">Send a direct message or email directly at <a href="mailto:av827977@gmail.com" style="color:var(--green-bright); text-decoration:underline;">av827977@gmail.com</a>.</p>
     </div>
 
     <div class="contact-form-card">
-      <form id="contactForm" action="https://formspree.io/f/av827977" method="POST">
+      <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="bf20ee6f-3211-42b9-96c3-a7bffae858b4">
+        <input type="hidden" name="subject" value="New message from Aayush Verma Portfolio">
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
         <div class="form-group">
           <label for="name">Your Name</label>
           <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required>
@@ -1392,28 +1416,27 @@
     var btn = document.getElementById('contactSubmitBtn');
     btn.textContent = 'Sending...';
     btn.disabled = true;
-    var data = new FormData(contactForm);
+    var payload = {
+      access_key: 'bf20ee6f-3211-42b9-96c3-a7bffae858b4',
+      subject: 'New message from Aayush Verma Portfolio',
+      name: contactForm.querySelector('#name').value,
+      email: contactForm.querySelector('#email').value,
+      message: contactForm.querySelector('#message').value
+    };
     fetch(contactForm.action, {
       method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     }).then(function(response){
-      if(response.ok){
-        formStatus.textContent = 'Thank you! Your message has been sent successfully.';
+      return response.json();
+    }).then(function(data){
+      if(data.success){
+        formStatus.textContent = 'Thank you! Your message has been sent successfully to your inbox.';
         formStatus.className = 'form-status success';
         contactForm.reset();
       } else {
-        response.json().then(function(data){
-          if(data && data.errors){
-            formStatus.textContent = data.errors.map(function(error){ return error.message; }).join(", ");
-          } else {
-            formStatus.textContent = 'Oops! There was a problem submitting your form.';
-          }
-          formStatus.className = 'form-status error';
-        }).catch(function(){
-          formStatus.textContent = 'Oops! There was a problem submitting your form.';
-          formStatus.className = 'form-status error';
-        });
+        formStatus.textContent = data.message || 'Oops! There was a problem submitting your form.';
+        formStatus.className = 'form-status error';
       }
     }).catch(function(error){
       formStatus.textContent = 'Oops! Network error. Please email directly at av827977@gmail.com.';

@@ -11,6 +11,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 
 const ai = new GoogleGenAI({
@@ -63,6 +64,20 @@ app.post("/api/chat", async (req, res) => {
   } catch (err: any) {
     console.error("Gemini API error:", err);
     res.status(500).json({ error: err.message || "Failed to communicate with AI" });
+  }
+});
+
+app.post("/api/contact", (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+    if (!name || !email || !message) {
+      return res.status(400).json({ success: false, errors: [{ message: "All fields are required." }] });
+    }
+    console.log("Contact form submission received:", { name, email, message, timestamp: new Date().toISOString() });
+    return res.json({ success: true, message: "Thank you! Your message has been sent successfully." });
+  } catch (err: any) {
+    console.error("Contact form error:", err);
+    return res.status(500).json({ success: false, errors: [{ message: "Server error processing form." }] });
   }
 });
 

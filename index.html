@@ -7,6 +7,7 @@
 <meta name="description" content="Portfolio of Aayush Verma — aspiring software engineer, Java developer, and full-stack builder.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
   :root{
@@ -25,6 +26,21 @@
     --font-display:'Space Grotesk', sans-serif;
     --font-body:'Inter', sans-serif;
     --font-mono:'JetBrains Mono', monospace;
+  }
+
+  [data-theme="light"]{
+    --bg:#F8FAFC;
+    --bg-panel:#FFFFFF;
+    --bg-panel-2:#F1F5F9;
+    --line:#E2E8F0;
+    --line-bright:#CBD5E1;
+    --text-primary:#0F172A;
+    --text-dim:#475569;
+    --text-faint:#94A3B8;
+    --green:#16A34A;
+    --green-bright:#15803D;
+    --green-dim:#86EFAC;
+    --cyan:#0284C7;
   }
 
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -80,8 +96,42 @@
   }
 
   .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
-  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal{opacity:0; transform:translateY(32px); transition:opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);}
   .reveal.in{opacity:1; transform:translateY(0);}
+
+  .reveal.in .exp-card,
+  .reveal.in .edu-item,
+  .reveal.in .skill-prof-card,
+  .reveal.in .tilt-wrap,
+  .reveal.in .cert-item,
+  .reveal.in .chat-panel,
+  .reveal.in .contact-form-card,
+  .reveal.in .import-block {
+    opacity: 0;
+    animation: fadeUpStagger 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes fadeUpStagger {
+    0% { opacity: 0; transform: translateY(24px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-content > *, .hero .portrait-wrap {
+    opacity: 0;
+    animation: heroFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero .eyebrow { animation-delay: 0.1s; }
+  .hero h1.name { animation-delay: 0.2s; }
+  .hero .role-line { animation-delay: 0.3s; }
+  .hero .hero-desc { animation-delay: 0.4s; }
+  .hero .hero-links { animation-delay: 0.5s; }
+  .hero .stat-row { animation-delay: 0.6s; }
+  .hero .portrait-wrap { animation-delay: 0.35s; }
+
+  @keyframes heroFadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
 
   /* ---------- NOISE / GRID BG ---------- */
   body::before{
@@ -141,6 +191,22 @@
     transition:background .18s ease, box-shadow .18s ease, transform .18s ease;
   }
   .nav-cta:hover{background:var(--green-bright); box-shadow:0 0 20px rgba(159,227,0,0.45); transform:translateY(-1px);}
+  .nav-resume{
+    font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--text-primary);
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); padding:9px 14px; border-radius:4px;
+    transition:background .18s ease, border-color .18s ease, transform .18s ease; display:inline-flex; align-items:center; gap:6px;
+  }
+  .nav-resume:hover{background:rgba(118,185,0,0.1); border-color:var(--green); color:var(--green-bright); transform:translateY(-1px);}
+
+  .theme-toggle{
+    background:var(--bg-panel-2); border:1px solid var(--line-bright);
+    color:var(--text-primary); width:36px; height:36px; border-radius:6px;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+  }
+  .theme-toggle:hover{
+    background:rgba(118,185,0,0.1); border-color:var(--green); color:var(--green-bright); transform:translateY(-1px);
+  }
 
   .menu-btn{
     display:none; flex-direction:column; justify-content:center; gap:5px;
@@ -374,6 +440,41 @@
     box-shadow:0 8px 18px -10px rgba(118,185,0,0.5);
   }
 
+  /* ---------- SKILL PROFICIENCY BARS ---------- */
+  .skills-prof-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap:22px; margin-top:24px;}
+  .skill-prof-card{
+    background:rgba(255,255,255,0.035);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.09); border-radius:14px; padding:22px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .skill-prof-card:hover{
+    border-color:rgba(118,185,0,0.4);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.08), 0 12px 30px -15px rgba(118,185,0,0.15);
+  }
+  .skill-prof-title{
+    font-family:var(--font-display); font-weight:700; font-size:16px; margin-bottom:18px;
+    display:flex; align-items:center; gap:8px; color:var(--text-primary);
+  }
+  .skill-prof-title i{color:var(--green-bright);}
+  .skill-bar-row{margin-bottom:15px;}
+  .skill-bar-row:last-child{margin-bottom:0;}
+  .skill-bar-meta{display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px; font-family:var(--font-mono);}
+  .skill-bar-name{color:var(--text-primary); display:flex; align-items:center; gap:8px;}
+  .skill-bar-name i{width:16px; text-align:center; color:var(--green-bright);}
+  .skill-bar-pct{color:var(--green-bright); font-weight:600;}
+  .skill-bar-track{width:100%; height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden;}
+  .skill-bar-fill{height:100%; background:linear-gradient(90deg, var(--green-dim), var(--green-bright)); border-radius:3px; box-shadow:0 0 10px rgba(118,185,0,0.4);}
+
+  @media (max-width: 400px){
+    .skills-prof-grid{grid-template-columns:1fr; gap:14px;}
+    .skill-prof-card{padding:14px; border-radius:12px;}
+    .skill-prof-title{font-size:14px; margin-bottom:12px;}
+    .skill-bar-meta{font-size:11.5px; margin-bottom:4px;}
+    .skill-bar-row{margin-bottom:10px;}
+  }
+
   /* ---------- PROJECTS (3D tilt cards) ---------- */
   .proj-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(min(290px, 100%),1fr)); gap:22px;}
   .tilt-wrap{perspective:900px; position:relative;}
@@ -406,6 +507,18 @@
   .proj-tag{
     font-family:var(--font-mono); font-size:11px; padding:4px 10px; border-radius:5px;
     background:rgba(57,225,216,0.08); color:var(--cyan); border:1px solid rgba(57,225,216,0.25);
+  }
+  .proj-links{display:flex; gap:10px; margin-top:auto; transform:translateZ(25px); flex-wrap:wrap;}
+  .proj-link{
+    font-family:var(--font-mono); font-size:11.5px; font-weight:600;
+    color:var(--green-bright); background:rgba(118,185,0,0.1);
+    border:1px solid rgba(118,185,0,0.3); padding:6px 12px; border-radius:6px;
+    display:inline-flex; align-items:center; gap:4px; min-height:36px;
+    transition:background .18s ease, border-color .18s ease, transform .18s ease, color .18s ease;
+  }
+  .proj-link:hover{
+    background:var(--green); color:#050505; border-color:var(--green-bright);
+    transform:translateY(-1px);
   }
   .proj-peek{
     position:absolute; top:18px; right:18px; font-family:var(--font-mono); font-size:11px;
@@ -528,6 +641,40 @@
     .chat-input-row{ padding:14px; }
   }
 
+  /* ---------- CONTACT FORM ---------- */
+  .contact-form-card{
+    background:rgba(255,255,255,0.035);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,0.09); border-radius:16px; padding:32px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.05); max-width:680px; margin:0 auto;
+  }
+  .form-group{margin-bottom:20px;}
+  .form-group label{
+    display:block; font-family:var(--font-mono); font-size:12px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--text-dim); margin-bottom:8px;
+  }
+  .form-control{
+    width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+    border-radius:8px; padding:12px 16px; color:var(--text-primary); font-family:var(--font-body);
+    font-size:15px; outline:none; transition:border-color .2s ease, box-shadow .2s ease; box-sizing:border-box;
+  }
+  .form-control:focus{
+    border-color:var(--green-bright); box-shadow:0 0 0 3px rgba(118,185,0,0.15);
+  }
+  .contact-submit{
+    width:100%; background:var(--green); color:#050505; border:none; border-radius:8px;
+    padding:14px; font-family:var(--font-mono); font-weight:600; font-size:14px;
+    cursor:pointer; transition:background .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  .contact-submit:hover{
+    background:var(--green-bright); transform:translateY(-1px); box-shadow:0 8px 24px rgba(118,185,0,0.35);
+  }
+  .form-status{
+    margin-top:16px; text-align:center; font-family:var(--font-mono); font-size:13px;
+  }
+  .form-status.success{color:var(--green-bright);}
+  .form-status.error{color:#ff5555;}
+
   /* ---------- FOOTER ---------- */
   footer{padding:70px 0 50px; border-top:1px solid var(--line); text-align:center; position:relative; z-index:2;}
   .footer-title{font-family:var(--font-display); font-weight:700; font-size:clamp(26px,4.4vw,42px); margin-bottom:16px;}
@@ -546,14 +693,19 @@
   <div class="nav-inner">
     <div class="brand"><span class="core"></span>AAYUSH VERMA</div>
     <nav class="navlinks">
-      <a href="#experience">Experience</a>
-      <a href="#education">Education</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#certifications">Certifications</a>
-      <a href="#ask-me">Ask</a>
+      <a href="#experience"><i class="fa-solid fa-briefcase"></i> Experience</a>
+      <a href="#education"><i class="fa-solid fa-graduation-cap"></i> Education</a>
+      <a href="#skills"><i class="fa-solid fa-code"></i> Skills</a>
+      <a href="#projects"><i class="fa-solid fa-layer-group"></i> Projects</a>
+      <a href="#certifications"><i class="fa-solid fa-award"></i> Certifications</a>
+      <a href="#ask-me"><i class="fa-solid fa-robot"></i> Ask AI</a>
+      <a href="#contact-form"><i class="fa-solid fa-envelope"></i> Contact</a>
     </nav>
     <div class="nav-right">
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme" title="Toggle dark/light mode">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+      </button>
+      <a class="nav-resume" href="/api/resume" download="Aayush_Verma_Resume.pdf"><i class="fa-solid fa-file-pdf"></i> Resume ↗</a>
       <a class="nav-cta" href="mailto:av827977@gmail.com">Let's talk ↗</a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span><span></span><span></span>
@@ -561,12 +713,17 @@
     </div>
   </div>
   <nav class="mobile-menu" id="mobileMenu">
-    <a href="#experience">Experience</a>
-    <a href="#education">Education</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#certifications">Certifications</a>
-    <a href="#ask-me">Ask</a>
+    <a href="#experience"><i class="fa-solid fa-briefcase"></i> Experience</a>
+    <a href="#education"><i class="fa-solid fa-graduation-cap"></i> Education</a>
+    <a href="#skills"><i class="fa-solid fa-code"></i> Skills</a>
+    <a href="#projects"><i class="fa-solid fa-layer-group"></i> Projects</a>
+    <a href="#certifications"><i class="fa-solid fa-award"></i> Certifications</a>
+    <a href="#ask-me"><i class="fa-solid fa-robot"></i> Ask AI</a>
+    <a href="#contact-form"><i class="fa-solid fa-envelope"></i> Contact</a>
+    <button id="themeToggleMobile" style="background:none; border:none; border-bottom:1px solid var(--line); width:100%; text-align:left; padding:15px 28px; font-family:var(--font-mono); font-size:13px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.06em; cursor:pointer; display:flex; align-items:center; gap:10px;">
+      <i class="fa-solid fa-moon" id="themeIconMobile"></i> Toggle Theme
+    </button>
+    <a href="/api/resume" download="Aayush_Verma_Resume.pdf" style="color:var(--green-bright);"><i class="fa-solid fa-file-pdf"></i> Download Resume (.PDF)</a>
   </nav>
 </header>
 
@@ -594,7 +751,7 @@
       </div>
       <div class="stat-row">
         <div class="stat"><span class="num">9.63</span><span class="lbl">CGPA</span></div>
-        <div class="stat"><span class="num">3</span><span class="lbl">Shipped Projects</span></div>
+        <div class="stat"><span class="num">4</span><span class="lbl">Shipped Projects</span></div>
         <div class="stat"><span class="num">4+</span><span class="lbl">Languages</span></div>
         <div class="stat"><span class="num">5</span><span class="lbl">Certifications</span></div>
       </div>
@@ -604,7 +761,7 @@
   <!-- EXPERIENCE -->
   <section id="experience" class="reveal">
     <div class="sec-head">
-      <h2 class="sec-title">Where I've built</h2>
+      <h2 class="sec-title"><i class="fa-solid fa-briefcase"></i> Where I've built</h2>
     </div>
     <div class="exp-card">
       <div class="exp-top">
@@ -628,7 +785,7 @@
   <!-- EDUCATION -->
   <section id="education" class="reveal">
     <div class="sec-head">
-      <h2 class="sec-title">Academic record</h2>
+      <h2 class="sec-title"><i class="fa-solid fa-graduation-cap"></i> Academic record</h2>
     </div>
     <div class="edu-timeline">
       <div class="edu-item">
@@ -655,45 +812,83 @@
   <!-- SKILLS -->
   <section id="skills" class="reveal">
     <div class="sec-head">
-      <h2 class="sec-title">The toolkit</h2>
+      <h2 class="sec-title"><i class="fa-solid fa-code"></i> Technical Proficiency</h2>
+      <p class="sec-sub">Languages, frameworks, and practical knowledge levels.</p>
     </div>
 
-    <div class="import-block">
-      <div class="comment">// core toolkit, declared like it matters</div>
-      <div class="pkg"><span class="kw">import</span> languages.{ <span class="cls">Java</span>, <span class="cls">Python</span>, <span class="cls">Cpp</span>, <span class="cls">C</span> };</div>
-      <div class="pkg"><span class="kw">import</span> web.{ <span class="cls">React</span>, <span class="cls">WebDevelopment</span> };</div>
-      <div class="pkg"><span class="kw">import</span> foundations.{ <span class="cls">DSA</span> };</div>
-    </div>
+    <div class="skills-prof-grid">
+      <div class="skill-prof-card">
+        <div class="skill-prof-title"><i class="fa-solid fa-code"></i> Languages</div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-bar-name"><i class="fa-brands fa-java"></i> Java (Advanced)</span>
+            <span class="skill-bar-pct">95%</span>
+          </div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width: 95%;"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-bar-name"><i class="fa-brands fa-python"></i> Python</span>
+            <span class="skill-bar-pct">85%</span>
+          </div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width: 85%;"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-bar-name"><i class="fa-solid fa-c"></i> C++ / C</span>
+            <span class="skill-bar-pct">80%</span>
+          </div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width: 80%;"></div></div>
+        </div>
+      </div>
 
-    <div class="tag-grid">
-      <div class="tag-group">
-        <h4>Languages</h4>
-        <div class="tag-pills">
-          <span class="pill">Java (Advanced)</span>
-          <span class="pill">Python</span>
-          <span class="pill">C++</span>
-          <span class="pill">C</span>
+      <div class="skill-prof-card">
+        <div class="skill-prof-title"><i class="fa-solid fa-layer-group"></i> Web &amp; Databases</div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-bar-name"><i class="fa-solid fa-leaf"></i> Spring Boot</span>
+            <span class="skill-bar-pct">90%</span>
+          </div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width: 90%;"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-bar-name"><i class="fa-brands fa-react"></i> React &amp; Full-Stack</span>
+            <span class="skill-bar-pct">88%</span>
+          </div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width: 88%;"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-bar-name"><i class="fa-solid fa-database"></i> MySQL &amp; MongoDB</span>
+            <span class="skill-bar-pct">85%</span>
+          </div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width: 85%;"></div></div>
         </div>
       </div>
-      <div class="tag-group">
-        <h4>Web &amp; Frameworks</h4>
-        <div class="tag-pills">
-          <span class="pill">React</span>
-          <span class="pill">Web Development</span>
+
+      <div class="skill-prof-card">
+        <div class="skill-prof-title"><i class="fa-solid fa-brain"></i> Foundations &amp; Core</div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-bar-name"><i class="fa-solid fa-sitemap"></i> Data Structures &amp; Algorithms</span>
+            <span class="skill-bar-pct">90%</span>
+          </div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width: 90%;"></div></div>
         </div>
-      </div>
-      <div class="tag-group">
-        <h4>Foundations</h4>
-        <div class="tag-pills">
-          <span class="pill">Data Structures &amp; Algorithms</span>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-bar-name"><i class="fa-solid fa-users"></i> Communication &amp; Teamwork</span>
+            <span class="skill-bar-pct">95%</span>
+          </div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width: 95%;"></div></div>
         </div>
-      </div>
-      <div class="tag-group">
-        <h4>Working Style</h4>
-        <div class="tag-pills">
-          <span class="pill">Communication</span>
-          <span class="pill">Leadership</span>
-          <span class="pill">Time Management</span>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-bar-name"><i class="fa-solid fa-clock"></i> Time Management</span>
+            <span class="skill-bar-pct">90%</span>
+          </div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width: 90%;"></div></div>
         </div>
       </div>
     </div>
@@ -702,38 +897,80 @@
   <!-- PROJECTS -->
   <section id="projects" class="reveal">
     <div class="sec-head">
-      <h2 class="sec-title">Things I've shipped</h2>
-      <p class="sec-sub">Three builds spanning a game engine, a full-stack platform, and a recommendation system. Hover a card and watch it pop.</p>
+      <h2 class="sec-title"><i class="fa-solid fa-layer-group"></i> Things I've shipped</h2>
+      <p class="sec-sub">Four builds spanning a CRM system, a game engine, a full-stack platform, and a recommendation system. Hover a card and watch it pop.</p>
     </div>
     <div class="proj-grid">
       <div class="tilt-wrap">
         <div class="proj-card">
           <div class="glow"></div>
           <span class="proj-peek">● Details</span>
-          <div class="proj-file">Sudoku.java <span>01</span></div>
+          <div class="proj-file">crms/ <span>01</span></div>
+          <div class="proj-title">CRMS (Customer Relationship Management)</div>
+          <p class="proj-desc">A robust Customer Relationship Management System for managing client records, tracking interactions, pipeline analytics, and streamlined business workflows.</p>
+          <div class="proj-tags">
+            <span class="proj-tag"><i class="fa-brands fa-java"></i> Java</span>
+            <span class="proj-tag"><i class="fa-solid fa-leaf"></i> Spring Boot</span>
+            <span class="proj-tag"><i class="fa-solid fa-database"></i> MySQL</span>
+            <span class="proj-tag"><i class="fa-solid fa-wind"></i> Tailwind</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/CodewithAayush253" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub ↗</a>
+            <a class="proj-link" href="https://github.com/CodewithAayush253" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Live Demo ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="tilt-wrap">
+        <div class="proj-card">
+          <div class="glow"></div>
+          <span class="proj-peek">● Details</span>
+          <div class="proj-file">Sudoku.java <span>02</span></div>
           <div class="proj-title">Sudoku Game</div>
           <p class="proj-desc">A Java-based Sudoku game with multiple difficulty levels, real-time move validation, puzzle generation, and a user-friendly interface.</p>
-          <div class="proj-tags"><span class="proj-tag">Java</span><span class="proj-tag">OOP</span></div>
+          <div class="proj-tags">
+            <span class="proj-tag"><i class="fa-brands fa-java"></i> Java</span>
+            <span class="proj-tag"><i class="fa-solid fa-cube"></i> OOP</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/CodewithAayush253" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub ↗</a>
+            <a class="proj-link" href="https://github.com/CodewithAayush253" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Live Demo ↗</a>
+          </div>
         </div>
       </div>
       <div class="tilt-wrap">
         <div class="proj-card">
           <div class="glow"></div>
           <span class="proj-peek">● Details</span>
-          <div class="proj-file">ecommerce/ <span>02</span></div>
+          <div class="proj-file">ecommerce/ <span>03</span></div>
           <div class="proj-title">E-Commerce Website</div>
           <p class="proj-desc">Full-stack e-commerce platform on the MERN stack with authentication, shopping cart, product management, and a responsive UI.</p>
-          <div class="proj-tags"><span class="proj-tag">MongoDB</span><span class="proj-tag">Express</span><span class="proj-tag">React</span><span class="proj-tag">Node.js</span></div>
+          <div class="proj-tags">
+            <span class="proj-tag"><i class="fa-solid fa-database"></i> MongoDB</span>
+            <span class="proj-tag"><i class="fa-brands fa-node-js"></i> Express</span>
+            <span class="proj-tag"><i class="fa-brands fa-react"></i> React</span>
+            <span class="proj-tag"><i class="fa-brands fa-node"></i> Node.js</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/CodewithAayush253" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub ↗</a>
+            <a class="proj-link" href="https://github.com/CodewithAayush253" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Live Demo ↗</a>
+          </div>
         </div>
       </div>
       <div class="tilt-wrap">
         <div class="proj-card">
           <div class="glow"></div>
           <span class="proj-peek">● Details</span>
-          <div class="proj-file">MovieRec.java <span>03</span></div>
+          <div class="proj-file">MovieRec.java <span>04</span></div>
           <div class="proj-title">Movie Recommendation System</div>
           <p class="proj-desc">Java application that recommends movies based on mood and genre, integrating with the TMDB database to quickly fetch relevant titles.</p>
-          <div class="proj-tags"><span class="proj-tag">Java</span><span class="proj-tag">TMDB API</span></div>
+          <div class="proj-tags">
+            <span class="proj-tag"><i class="fa-brands fa-java"></i> Java</span>
+            <span class="proj-tag"><i class="fa-solid fa-film"></i> TMDB API</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/CodewithAayush253" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub ↗</a>
+            <a class="proj-link" href="https://github.com/CodewithAayush253" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Live Demo ↗</a>
+          </div>
         </div>
       </div>
     </div>
@@ -742,7 +979,7 @@
   <!-- CERTIFICATIONS -->
   <section id="certifications" class="reveal">
     <div class="sec-head">
-      <h2 class="sec-title">Credentials</h2>
+      <h2 class="sec-title"><i class="fa-solid fa-award"></i> Credentials</h2>
     </div>
     <div class="cert-list">
       <div class="cert-item"><span class="check">✓</span><span class="cert-name">AI for All (AI and Cybersecurity)</span>&nbsp;— TCS iON</div>
@@ -756,35 +993,62 @@
   <!-- ASK ME -->
   <section id="ask-me" class="reveal">
     <div class="sec-head">
-      <h2 class="sec-title">Ask about me</h2>
-      <p class="sec-sub">A small assistant loaded with my resume — skills, experience, education, projects, and certifications. Ask it anything.</p>
+      <h2 class="sec-title"><i class="fa-solid fa-robot"></i> Ask Aayush Assistant</h2>
+      <p class="sec-sub">An interactive AI assistant powered by Google Gemini, trained on Aayush's complete resume, projects, and engineering background.</p>
     </div>
 
     <div class="chat-panel">
       <div class="chat-head">
-        <div class="chat-avatar">AV</div>
+        <div class="chat-avatar" style="background:var(--green); color:#050505; font-weight:700; display:flex; align-items:center; justify-content:center; border-radius:50%; width:36px; height:36px;">AV</div>
         <div class="chat-head-meta">
-          <div class="chat-head-name">Aayush's Assistant</div>
+          <div class="chat-head-name">Aayush Assistant</div>
           <div class="chat-head-status">Online</div>
         </div>
       </div>
 
       <div class="chat-messages" id="chatMessages">
-        <div class="msg bot">Hi! I know Aayush's background — skills, his internship, education, projects, and certifications. What would you like to know?</div>
+        <div class="msg bot">Hello! I'm Aayush Assistant powered by Gemini. Ask me anything about his Java background, projects like CRMS and Sudoku, his internship at Algonive, education, or how to get in touch!</div>
       </div>
 
       <div class="chat-suggestions">
-        <span class="chip" data-q="What are your skills?">Skills</span>
-        <span class="chip" data-q="Tell me about your projects">Projects</span>
-        <span class="chip" data-q="What's your work experience?">Experience</span>
-        <span class="chip" data-q="How can I contact you?">Contact</span>
+        <span class="chip" data-q="What are Aayush's top technical skills?">Skills</span>
+        <span class="chip" data-q="Tell me about the CRMS and E-Commerce projects">Projects</span>
+        <span class="chip" data-q="What did Aayush do at Algonive Technologies?">Experience</span>
+        <span class="chip" data-q="How can I contact or hire Aayush?">Contact</span>
       </div>
 
       <div class="chat-input-row">
-        <input id="chatInput" type="text" placeholder="Ask about skills, projects, education..." autocomplete="off">
+        <input id="chatInput" type="text" placeholder="Ask about Aayush's code, projects, education..." autocomplete="off">
         <button class="chat-send" id="chatSend">Send</button>
       </div>
-      <div class="chat-disclaimer">Answers are generated from Aayush's resume, not a live AI model.</div>
+      <div class="chat-disclaimer">Powered by Google Gemini API. Responses are generated in real-time.</div>
+    </div>
+  </section>
+
+  <!-- CONTACT FORM -->
+  <section id="contact-form" class="reveal">
+    <div class="sec-head">
+      <h2 class="sec-title"><i class="fa-solid fa-envelope"></i> Get in touch</h2>
+      <p class="sec-sub">Send a direct message that goes straight to Aayush's inbox via Formspree.</p>
+    </div>
+
+    <div class="contact-form-card">
+      <form id="contactForm" action="https://formspree.io/f/av827977" method="POST">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Your Email</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" class="form-control" placeholder="Hello Aayush, I would like to discuss..." required></textarea>
+        </div>
+        <button type="submit" class="contact-submit" id="contactSubmitBtn">Send Message ↗</button>
+        <div id="formStatus" class="form-status"></div>
+      </form>
     </div>
   </section>
 
@@ -903,14 +1167,21 @@
     });
   }
 
-  /* ---------- Scroll reveal ---------- */
+  /* ---------- Scroll reveal with staggered children ---------- */
   var reveals = document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
-        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          var children = e.target.querySelectorAll('.exp-card, .edu-item, .skill-prof-card, .tilt-wrap, .cert-item, .chat-panel, .contact-form-card, .import-block');
+          children.forEach(function(child, idx){
+            child.style.animationDelay = (0.08 + idx * 0.1) + 's';
+          });
+          io.unobserve(e.target);
+        }
       });
-    }, {threshold:0.12});
+    }, {threshold:0.1});
     reveals.forEach(function(el){ io.observe(el); });
   } else {
     reveals.forEach(function(el){ el.classList.add('in'); });
@@ -1037,7 +1308,7 @@
   });
 })();
 
-/* ---------- Ask-Me assistant ---------- */
+/* ---------- Gemini AI Assistant ---------- */
 (function(){
   var messagesEl = document.getElementById('chatMessages');
   var inputEl = document.getElementById('chatInput');
@@ -1045,60 +1316,7 @@
   var chips = document.querySelectorAll('.chip');
   if(!messagesEl || !inputEl || !sendBtn) return;
 
-  var knowledge = [
-    {
-      keys: ['skill','language','tech','stack','java','python','c++','cpp','react','dsa','program'],
-      answer: "Aayush works with Java (advanced), Python, C++, and C, plus web development with React. He's also built a solid foundation in Data Structures & Algorithms. On the soft-skills side: strong communication, leadership, and time management."
-    },
-    {
-      keys: ['experience','intern','work','job','algonive','company','role'],
-      answer: "He worked as a Java Developer Intern at Algonive Technologies (Bengaluru) from June to July 2025. He engineered a Java file-size calculator with OOP principles, built Java applications, ran code reviews, and collaborated with senior developers using Agile methodology."
-    },
-    {
-      keys: ['education','study','college','university','cgpa','gpa','degree','sdgi','school','academic'],
-      answer: "He's pursuing a B.Tech in Computer Science & Engineering at SDGI Global University, Ghaziabad (expected 08/2027) with a 9.63 CGPA. Before that: Intermediate at 81.6% and High School at 88.2%, both from H.S.S Public School."
-    },
-    {
-      keys: ['project','sudoku','ecommerce','e-commerce','commerce','movie','recommend','mern','build','made','portfolio'],
-      answer: "Three projects worth knowing: a Java Sudoku Game with difficulty levels and puzzle generation, a full-stack E-Commerce Website on the MERN stack with auth and a shopping cart, and a Java Movie Recommendation System that suggests films by mood/genre using the TMDB database."
-    },
-    {
-      keys: ['certificat','course','workshop','tcs','wadhwani','ducat','brain mentor','analytics','training','ai for all'],
-      answer: "He holds certifications in AI for All (AI & Cybersecurity) from TCS iON, an IDE Bootcamp with Wadhwani Foundation & AICTE, a DSA workshop from DUCAT, VOIS & AI Design Challenge workshops, and Analytics Unlocked from Brain Mentor."
-    },
-    {
-      keys: ['contact','email','phone','reach','hire','linkedin','connect','number','mail'],
-      answer: "You can reach Aayush at av827977@gmail.com or 8279775014. He's also on LinkedIn (aayush-verma-b06abb300) and GitHub (CodewithAayush253) — links are in the footer below."
-    },
-    {
-      keys: ['who','about','yourself','introduce','aayush','objective','summary'],
-      answer: "Aayush Verma is a final-year B.Tech CSE student — an aspiring software engineer building with Java, Python, C++, and web development, focused on solving real problems while growing both personally and professionally."
-    },
-    {
-      keys: ['location','based','live','city','hasanpur','where'],
-      answer: "He's based in Hasanpur (244241)."
-    },
-    {
-      keys: ['hi','hello','hey','yo'],
-      answer: "Hey! Ask me about Aayush's skills, projects, experience, education, or certifications."
-    },
-    {
-      keys: ['thank','thanks'],
-      answer: "You're welcome! Anything else you'd like to know about Aayush?"
-    }
-  ];
-
-  function getReply(raw){
-    var text = raw.toLowerCase();
-    var best = null, bestScore = 0;
-    knowledge.forEach(function(entry){
-      var score = 0;
-      entry.keys.forEach(function(k){ if(text.indexOf(k) !== -1) score++; });
-      if(score > bestScore){ bestScore = score; best = entry; }
-    });
-    if(best) return best.answer;
-    return "I don't have specifics on that, but you can ask about Aayush's skills, projects, experience, education, or certifications — or reach him directly at av827977@gmail.com.";
-  }
+  var history = [];
 
   function scrollToBottom(){
     messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -1132,11 +1350,27 @@
     addMessage(text, 'user');
     inputEl.value = '';
     showTyping();
-    var delay = 450 + Math.random() * 450;
-    setTimeout(function(){
+
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, history: history })
+    })
+    .then(function(res){ return res.json(); })
+    .then(function(data){
       hideTyping();
-      addMessage(getReply(text), 'bot');
-    }, delay);
+      if(data.reply){
+        addMessage(data.reply, 'bot');
+        history.push({ role: 'user', parts: [{ text: text }] });
+        history.push({ role: 'model', parts: [{ text: data.reply }] });
+      } else {
+        addMessage("Sorry, I encountered an error connecting to Gemini.", 'bot');
+      }
+    })
+    .catch(function(err){
+      hideTyping();
+      addMessage("Network error connecting to Gemini AI assistant.", 'bot');
+    });
   }
 
   sendBtn.addEventListener('click', function(){ handleSend(); });
@@ -1146,6 +1380,81 @@
   chips.forEach(function(chip){
     chip.addEventListener('click', function(){ handleSend(chip.getAttribute('data-q')); });
   });
+})();
+
+/* ---------- Contact form AJAX submission ---------- */
+(function(){
+  var contactForm = document.getElementById('contactForm');
+  var formStatus = document.getElementById('formStatus');
+  if(!contactForm) return;
+  contactForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = document.getElementById('contactSubmitBtn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    var data = new FormData(contactForm);
+    fetch(contactForm.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(function(response){
+      if(response.ok){
+        formStatus.textContent = 'Thank you! Your message has been sent successfully.';
+        formStatus.className = 'form-status success';
+        contactForm.reset();
+      } else {
+        response.json().then(function(data){
+          if(data && data.errors){
+            formStatus.textContent = data.errors.map(function(error){ return error.message; }).join(", ");
+          } else {
+            formStatus.textContent = 'Oops! There was a problem submitting your form.';
+          }
+          formStatus.className = 'form-status error';
+        }).catch(function(){
+          formStatus.textContent = 'Oops! There was a problem submitting your form.';
+          formStatus.className = 'form-status error';
+        });
+      }
+    }).catch(function(error){
+      formStatus.textContent = 'Oops! Network error. Please email directly at av827977@gmail.com.';
+      formStatus.className = 'form-status error';
+    }).finally(function(){
+      btn.textContent = 'Send Message ↗';
+      btn.disabled = false;
+    });
+  });
+})();
+
+/* ---------- Theme Switcher ---------- */
+(function(){
+  var themeToggleBtn = document.getElementById('themeToggleBtn');
+  var themeToggleMobile = document.getElementById('themeToggleMobile');
+  var themeIcon = document.getElementById('themeIcon');
+  var themeIconMobile = document.getElementById('themeIconMobile');
+  
+  var currentTheme = localStorage.getItem('theme') || 'dark';
+  if(currentTheme === 'light'){
+    document.documentElement.setAttribute('data-theme', 'light');
+    if(themeIcon) themeIcon.className = 'fa-solid fa-sun';
+    if(themeIconMobile) themeIconMobile.className = 'fa-solid fa-sun';
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    if(themeIcon) themeIcon.className = 'fa-solid fa-moon';
+    if(themeIconMobile) themeIconMobile.className = 'fa-solid fa-moon';
+  }
+
+  function toggleTheme(){
+    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    var newTheme = isLight ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    var iconClass = newTheme === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    if(themeIcon) themeIcon.className = iconClass;
+    if(themeIconMobile) themeIconMobile.className = iconClass;
+  }
+
+  if(themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+  if(themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
 })();
 </script>
 

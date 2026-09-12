@@ -1388,7 +1388,7 @@
         history.push({ role: 'user', parts: [{ text: text }] });
         history.push({ role: 'model', parts: [{ text: data.reply }] });
       } else {
-        addMessage("Sorry, I encountered an error connecting to Gemini.", 'bot');
+        addMessage(data.error || "Sorry, I encountered an error connecting to Gemini.", 'bot');
       }
     })
     .catch(function(err){

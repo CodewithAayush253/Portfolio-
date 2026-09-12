@@ -47,23 +47,41 @@ app.post("/api/chat", async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    const contents = history && Array.isArray(history) 
-      ? [...history, { role: 'user', parts: [{ text: message }] }]
-      : message;
+    const validHistory = history && Array.isArray(history) 
+      ? history.filter(function(h: any) { return h && h.role && h.parts; })
+      : [];
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
-      contents: contents,
-      config: {
-        systemInstruction: AAYUSH_PROFILE,
-        temperature: 0.7,
+    const contents = [...validHistory, { role: 'user', parts: [{ text: message }] }];
+
+    let response;
+    const modelsToTry = ["gemini-flash-latest", "gemini-1.5-flash", "gemini-pro"];
+    let lastError = null;
+
+    for (const m of modelsToTry) {
+      try {
+        response = await ai.models.generateContent({
+          model: m,
+          contents: contents,
+          config: {
+            systemInstruction: AAYUSH_PROFILE,
+            temperature: 0.7,
+          }
+        });
+        if (response && response.text) break;
+      } catch (e: any) {
+        lastError = e;
+        console.warn(`Model ${m} failed:`, e?.message || e);
       }
-    });
+    }
 
-    res.json({ reply: response.text || "I couldn't generate a response right now." });
+    if (!response || !response.text) {
+      throw lastError || new Error("Gemini is currently experiencing high demand. Please try again in a moment.");
+    }
+
+    res.json({ reply: response.text });
   } catch (err: any) {
-    console.error("Gemini API error:", err);
-    res.status(500).json({ error: err.message || "Failed to communicate with AI" });
+    console.error("Gemini API error details:", err);
+    res.status(500).json({ error: err.message || "Gemini is currently experiencing high demand. Please try again in a moment." });
   }
 });
 

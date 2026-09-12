@@ -14,14 +14,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
+const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY || process.env.GOOGLE_API_KEY || '';
+const ai = apiKey ? new GoogleGenAI({
+  apiKey: apiKey,
   httpOptions: {
     headers: {
       'User-Agent': 'aistudio-build',
     }
   }
-});
+}) : null;
 
 const AAYUSH_PROFILE = `You are the AI Assistant for Aayush Verma's professional portfolio. You represent Aayush and answer visitor questions accurately and politely based on the following resume and profile details:
 - Name: Aayush Verma
@@ -45,6 +46,21 @@ app.post("/api/chat", async (req, res) => {
     const { message, history } = req.body;
     if (!message) {
       return res.status(400).json({ error: "Message is required" });
+    }
+
+    if (!ai) {
+      const lower = message.toLowerCase();
+      let reply = "Hello! I am Aayush's AI Assistant. Aayush Verma is an aspiring Software Engineer, Java Developer, and Full-Stack Builder with a 9.63 CGPA in B.Tech CSE from SDGI Global University. You can reach him directly at av827977@gmail.com or call 8279775014!";
+      if (lower.includes("project") || lower.includes("crms") || lower.includes("sudoku") || lower.includes("ecommerce") || lower.includes("movie")) {
+        reply = "Aayush has built several notable projects:\n1. **CRMS (Customer Relationship Management System)**: Spring Boot, Java, MySQL.\n2. **Sudoku Game**: Interactive puzzle generator with move validation.\n3. **E-Commerce Platform**: Full-stack MERN shopping app.\n4. **Movie Recommendation System**: Java app integrating TMDB API.";
+      } else if (lower.includes("skill") || lower.includes("java") || lower.includes("python") || lower.includes("react") || lower.includes("dsa")) {
+        reply = "Aayush's core technical skills include **Java (Advanced)**, Python, C++, C, React, Web Development, and Data Structures & Algorithms (DSA). He also completed a Java Developer Internship at Algonive Technologies.";
+      } else if (lower.includes("contact") || lower.includes("email") || lower.includes("phone") || lower.includes("hire")) {
+        reply = "You can contact Aayush Verma via:\n- Email: av827977@gmail.com\n- Phone: 8279775014\n- GitHub: github.com/CodewithAayush253\n- LinkedIn: linkedin.com/in/aayush-verma-b06abb300";
+      } else if (lower.includes("education") || lower.includes("cgpa") || lower.includes("college") || lower.includes("university")) {
+        reply = "Aayush is pursuing B.Tech in Computer Science & Engineering at SDGI Global University, Ghaziabad (Expected 2027) with an outstanding **9.63 CGPA**!";
+      }
+      return res.json({ reply });
     }
 
     const validHistory = history && Array.isArray(history) 
